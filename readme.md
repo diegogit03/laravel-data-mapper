@@ -43,11 +43,7 @@ $mapper = new OrderMapper();
 # Persiste entidade
 $order = new Order();
 
-$orderCustomer = new Customer();
-$orderCustomer->name = 'Teste';
-$orderCustomer->email = 'teste@email.com';
-
-$order->customer = $orderCustomer;
+$order->customer = new Customer('Teste', 'teste@email.com');
 $order->total = new Money(100, 'BRL');
 
 $mapper->persist($user);
