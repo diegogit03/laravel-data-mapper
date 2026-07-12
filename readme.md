@@ -55,8 +55,34 @@ $mapper->persist($user);
 # Recupera entidade
 $order = $mapper->findBy('id', 1);
 
-# Mapeando collections
+# Mapeando collections e arrays
 $ordersCollection = DB::table('orders')->get();
-$orders = $mapper
-    ->fromCollection($ordersCollection);
+
+$orders = $mapper->fromCollection($ordersCollection);
+$orders = $mapper->fromArray($ordersCollection->toArray());
+```
+
+Uso dentro de um repository:
+
+```php
+class OrderRepository {
+    function __construct(private OrderMapper $mapper) {}
+
+    public function save(Order) {
+        $this->mapper->perist($order);
+    }
+    
+    /**
+    * @return array<Order>
+    */
+    public function findAll(): array {
+        $ordersCollection = DB::table('orders')->get();
+
+        return $this->mapper->fromCollection($ordersCollection);
+    }
+    
+    public function findById(int $id): ?Order {
+        return $this->mapper->findBy('id', $id);
+    }
+}
 ```
