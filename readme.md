@@ -6,6 +6,7 @@ Funcionalidades:
 - Data Mapping
 - Unit of Work
 - Identity Map
+- Laravel First
 
 ## Data Mapping
 
@@ -29,14 +30,14 @@ class Order {
 
 final class OrderMapper extends EntityMapper {
     protected function map (MetadataMapper $mapper) {
-        $mapper->mapField('id')->id();
-        $mapper->mapField('customer')
+        $mapper->map('id')->id();
+        $mapper->map('customer')
             ->toRow(fn (Order $order) => [
                 'customer_name' => $order->customer->name,
-                'customer_email' => $order->customer->email 
+                'customer_email' => $order->customer->email
             ])
             ->fromRow(fn (Object $row) => new Customer($row->customer_name, $customer->customer_email));
-        $mapper->mapField('total')
+        $mapper->map('total')
             ->toRow(fn (Order $order) => [
                 'total' => $order->total->toFloat()
             ])
@@ -48,7 +49,7 @@ final class OrderMapper extends EntityMapper {
 Uso do Mapper:
 
 ```php
-$mapper = new OrderMapper();
+$em = new EntityManager();
 
 # Persiste entidade
 $order = new Order();
@@ -56,30 +57,30 @@ $order = new Order();
 $order->customer = new Customer('Teste', 'teste@email.com');
 $order->total = new Money(100, 'BRL');
 
-$mapper->persist($user);
+$em->orders->persist($user);
 
-$mapper->customer->name = 'Teste 2';
+$order->customer->name = 'Teste 2';
 
-$mapper->persist($user);
+$em->orders->persist($user);
 
 # Recupera entidade
-$order = $mapper->findBy('id', 1);
+$order = $em->orders->findBy('id', 1);
 
 # Mapeando collections e arrays
 $ordersCollection = DB::table('orders')->get();
 
-$orders = $mapper->fromCollection($ordersCollection);
-$orders = $mapper->fromArray($ordersCollection->toArray());
+$orders = $em->orders->fromCollection($ordersCollection);
+$orders = $em->orders->fromArray($ordersCollection->toArray());
 ```
 
 Uso dentro de um repository:
 
 ```php
 class OrderRepository {
-    function __construct(private OrderMapper $mapper) {}
+    function __construct(private EntityManager $em) {}
 
-    public function save(Order) {
-        $this->mapper->perist($order);
+    public function save(Order $order) {
+        $this->em->orders->persist($order);
     }
     
     /**
@@ -88,11 +89,11 @@ class OrderRepository {
     public function findAll(): array {
         $ordersCollection = DB::table('orders')->get();
 
-        return $this->mapper->fromCollection($ordersCollection);
+        return $this->em->orders->fromCollection($ordersCollection);
     }
     
     public function findById(int $id): ?Order {
-        return $this->mapper->findBy('id', $id);
+        return $this->em->orders->findBy('id', $id);
     }
 }
 ```
