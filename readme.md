@@ -1,10 +1,15 @@
 # Eloquent Data Mapper
 
-Um simples Data mapper para laravel.
+Utilize Data mapper no eloquent sem perder o conforto do laravel.
 
-## Mapeamento
+Funcionalidades:
+- Data Mapping
+- Unit of Work
+- Identity Map
 
-No laravel data mapper é possivel tanto mapear com um simples objeto PHP:
+## Data Mapping
+
+No eloquent data mapper é possivel tanto mapear com um simples objeto PHP:
 
 ```php
 class Customer {
