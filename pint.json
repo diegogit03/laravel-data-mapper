@@ -1,0 +1,8 @@
+{
+  "preset": "psr12",
+  "exclude": ["vendor"],
+  "rules": {
+    "Pint/phpdoc_type_annotations_only": true,
+    "declare_strict_types": true
+  }
+}

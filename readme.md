@@ -1,4 +1,4 @@
-# Laravel Data Mapper
+# Eloquent Data Mapper
 
 Um simples Data mapper para laravel.
 
@@ -24,13 +24,18 @@ class Order {
 
 final class OrderMapper extends EntityMapper {
     protected function map (MetadataMapper $mapper) {
+        $mapper->mapField('id')->id();
         $mapper->mapField('customer')
             ->toRow(fn (Order $order) => [
                 'customer_name' => $order->customer->name,
                 'customer_email' => $order->customer->email 
             ])
             ->fromRow(fn (Object $row) => new Customer($row->customer_name, $customer->customer_email));
-        $mapper->mapField('price')->fromRow(fn (object $row) => new Money($row->price, 'BRL'));
+        $mapper->mapField('total')
+            ->toRow(fn (Order $order) => [
+                'total' => $order->total->toFloat()
+            ])
+            ->fromRow(fn (object $row) => new Money($row->price, 'BRL'));
     }
 }
 ```
