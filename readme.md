@@ -13,14 +13,14 @@ Funcionalidades:
 No eloquent data mapper é possivel tanto mapear com um simples objeto PHP:
 
 ```php
-class Customer {
+final readonly class Customer {
     public function __construct(
         public string $name,
         public string $email
     ) {}
 }
 
-class Order {
+final readonly class Order {
     public int $id;
     
     public Customer $customer;
@@ -28,7 +28,7 @@ class Order {
     public Money $total;
 }
 
-final class OrderMapper extends EntityMapper {
+final readonly class OrderMapper extends EntityMapper {
     protected function map (MetadataMapper $mapper) {
         $mapper->map('id')->id();
         $mapper->map('customer')
@@ -76,7 +76,7 @@ $orders = $em->orders->fromArray($ordersCollection->toArray());
 Uso dentro de um repository:
 
 ```php
-class OrderRepository {
+final readonly class OrderRepository {
     function __construct(private EntityManager $em) {}
 
     public function save(Order $order) {

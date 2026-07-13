@@ -2,6 +2,7 @@
     "name": "diego/eloquent-data-mapper",
     "description": "Um data mapper para o eloquent",
     "type": "library",
+    "version": "0.0.1",
     "license": "MIT",
     "scripts": {
         "stan": "./vendor/bin/phpstan analyse",
